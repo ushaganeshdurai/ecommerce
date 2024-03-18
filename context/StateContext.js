@@ -1,11 +1,11 @@
-import { useState, useContext, useEffect, createContext } from "react"; //instead of just using useState use context to update dynamically
-import { Toast } from "react-hot-toast";
+import {useState, useContext, useEffect, createContext } from "react"; //instead of just using useState use context to update dynamically
+import { toast } from "react-hot-toast";
 
 const Context = createContext();
 
 export const StateContext = ({ children }) => {
   const [showCart, setShowCart] = useState(false);
-  const [cartItems, setCartItems] = useState();
+  const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState();
   const [totalQty, setTotalQty] = useState();
   const [qty, setQty] = useState(1);
@@ -14,11 +14,11 @@ export const StateContext = ({ children }) => {
     const checkProductInCart = cartItems.find(
       (item) => item._id === product._id
     );
+    setTotalPrice(
+      (prevTotalPrice) => prevTotalPrice + product.price + quantity
+    );
+    setTotalQty((prevTotalQty) => prevTotalQty + quantity);
     if (checkProductInCart) {
-      setTotalPrice(
-        (prevTotalPrice) => prevTotalPrice + product.price + quantity
-      );
-      setTotalQty((prevTotalQty) => prevTotalQty + quantity);
       const updatedCartItems = cartItems.map((cartProduct) => {
         if (cartProduct._id === product._id)
           return {
@@ -26,7 +26,12 @@ export const StateContext = ({ children }) => {
             quantity: cartProduct.quantity + quantity,
           };
       });
+      setCartItems(updatedCartItems);
+    } else {
+      product.quantity = quantity;
+      setCartItems([...cartItems, { ...product }]);
     }
+    toast.success(`${qty}${product.name} added to the cart`);
   };
 
   const incQty = () => {
@@ -49,6 +54,7 @@ export const StateContext = ({ children }) => {
         incQty,
         decQty,
         qty,
+        onAdd
       }}
     >
       {children}
@@ -56,6 +62,5 @@ export const StateContext = ({ children }) => {
   );
 };
 
-export const useStateContext = () => {
-  useStateContext(Context);
-};
+export const useStateContext = () =>
+  useContext(Context);

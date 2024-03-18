@@ -6,7 +6,7 @@ import {
   AiFillStar,
   AiOutlineStar,
 } from "react-icons/ai";
-import { StateContext } from "/context/StateContext";
+import { useStateContext } from "/context/StateContext";
 import Product from "/components/Product.jsx";
 import React from "react";
 import { urlFor } from "../../lib/client.js";
@@ -20,7 +20,7 @@ const ProductDetails = ({ product, products }) => {
   const details = product?.details ?? "Details not available";
   const price = product?.price ?? "Price not available";
   const [index, setIndex] = useState(0);
-  const { incQty, decQty, qty } = useStateContext();
+  const { incQty, decQty, qty ,onAdd} = useStateContext();
 
   return (
     <div>
@@ -68,14 +68,14 @@ const ProductDetails = ({ product, products }) => {
           <div className={styles.buttons}>
             <button
               type="button"
-              onClick={() => ongamepaddisconnected(product, qty)}
+              onClick={() => onAdd(product, qty)}
               className={styles.add_to_cart}
             >
               Add to cart
             </button>
             <button
               type="button"
-              onClick={handleBuyNow}
+              onClick={""}
               className={styles.buy_now}
             >
               Buy now
