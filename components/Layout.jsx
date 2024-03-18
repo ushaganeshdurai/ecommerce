@@ -11,6 +11,7 @@ const Layout = ( {children} ) => {
 <Head>
   <title>SHOPIFY</title>
 </Head>
+
 <header>
   <Navbar />
 </header>
