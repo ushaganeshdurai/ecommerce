@@ -2,7 +2,6 @@ import React from "react";
 import { client } from "../lib/client.js";
 import styles from "../Globals.module.css";
 import { Product, FooterBanner, HeroBanner } from "../components";
-import banner from "../ecommerce/schemas/banner.js"
 const Home = ({ products, bannerData }) => {
   return (
     <>
