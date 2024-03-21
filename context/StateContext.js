@@ -1,4 +1,4 @@
-import {useState, useContext, createContext } from "react"; //instead of just using useState use context to update dynamically
+import { useState, useContext, createContext } from "react"; //instead of just using useState use context to update dynamically
 import { toast } from "react-hot-toast";
 
 const Context = createContext();
@@ -12,21 +12,22 @@ export const StateContext = ({ children }) => {
 
   const onAdd = (product, quantity) => {
     console.log("Adding product:", product); // Log the product object
-  
+
     console.log("Adding quantity:", quantity); // Log the added quantity
-  
+
     const checkProductInCart = cartItems.find(
-      (item) => item._id === product._id,
+      (item) => item._id === product._id
     );
     console.log("Existing product in cart:", checkProductInCart); // Log existing product details (if any)
-  
-    setTotalPrice((prevTotalPrice) => prevTotalPrice + (product.price * quantity)
+
+    setTotalPrice(
+      (prevTotalPrice) => prevTotalPrice + product.price * quantity
     ); //error begins
     console.log("Updated total price:", totalPrice); // Log the updated total price
-  
+
     setTotalQty((prevTotalQty) => prevTotalQty + quantity);
-    console.log("Updated total quantity:",totalQty); // Log the updated total quantity
-  
+    console.log("Updated total quantity:", totalQty); // Log the updated total quantity
+
     if (checkProductInCart) {
       const updatedCartItems = cartItems.map((cartProduct) => {
         if (cartProduct._id === product._id)
@@ -40,13 +41,13 @@ export const StateContext = ({ children }) => {
       console.log("Updated cart items:", updatedCartItems); // Log the updated cart items
     } else {
       product.quantity = quantity;
-      setCartItems([...cartItems, {...product }]);
+      setCartItems([...cartItems, { ...product }]);
       console.log("Updated cart items:", cartItems); // Log the updated cart items
     }
-  
+
     toast.success(`${qty} ${product.name} added to the cart`);
   };
-  
+
   const incQty = () => {
     setQty((prevQty) => prevQty + 1);
   };
@@ -61,13 +62,14 @@ export const StateContext = ({ children }) => {
     <Context.Provider
       value={{
         showCart,
+        setShowCart,
         cartItems,
         totalPrice,
         totalQty,
         incQty,
         decQty,
         qty,
-        onAdd
+        onAdd,
       }}
     >
       {children}
@@ -75,5 +77,4 @@ export const StateContext = ({ children }) => {
   );
 };
 
-export const useStateContext = () =>
-  useContext(Context);
+export const useStateContext = () => useContext(Context);

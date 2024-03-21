@@ -74,6 +74,7 @@ const ProductDetails = ({ product, products }) => {
             >
               Add to cart
             </button>
+            <Toaster />
             <button type="button" className={styles.buy_now}>
               Buy now
             </button>
