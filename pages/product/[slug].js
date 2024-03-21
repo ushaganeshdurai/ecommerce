@@ -12,15 +12,16 @@ import React from "react";
 import { urlFor } from "../../lib/client.js";
 import { client } from "../../lib/client.js";
 import styles from "/Globals.module.css";
+import { Toaster } from "react-hot-toast";
 // Corrected import path
 
 const ProductDetails = ({ product, products }) => {
   const image = product?.image && product.image[0];
-  const name = product?.name ?? "Product Name"; // Provide a default value
+  const name = product?.name ?? "Product Name";
   const details = product?.details ?? "Details not available";
   const price = product?.price ?? "Price not available";
   const [index, setIndex] = useState(0);
-  const { incQty, decQty, qty ,onAdd} = useStateContext();
+  const { incQty, decQty, qty, onAdd } = useStateContext();
 
   return (
     <div>
@@ -73,11 +74,7 @@ const ProductDetails = ({ product, products }) => {
             >
               Add to cart
             </button>
-            <button
-              type="button"
-              onClick={""}
-              className={styles.buy_now}
-            >
+            <button type="button" className={styles.buy_now}>
               Buy now
             </button>
           </div>
