@@ -10,6 +10,8 @@ export const StateContext = ({ children }) => {
   const [totalQty, setTotalQty] = useState(0);
   const [qty, setQty] = useState(1);
 
+  let foundProduct; let index;
+
   const onAdd = (product, quantity) => {
     console.log("Adding product:", product); // Log the product object
 
@@ -48,6 +50,33 @@ export const StateContext = ({ children }) => {
     toast.success(`${qty} ${product.name} added to the cart`);
   };
 
+  const onremove = (product) => {
+    foundProduct = cartItems.find((item) => item._id === product._id);
+    const newCartItems = cartItems.filter((item) => item._id !== product._id)
+    setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price * foundProduct.quantity)
+    setTotalQty((prevTotalQty) => prevTotalQty - foundProduct.quantity)
+    setCartItems(newCartItems)
+  }
+
+  const toggleCartItemQty = (id, val) => {
+    foundProduct = cartItems.find((item) => item._id === id);
+    index = cartItems.findIndex((product) => product._id === id);
+    const newCartItems = cartItems.filter((item) => item._id != id)
+    if (val === 'inc') {
+      // foundProduct.qty+=1;
+      // cartItems[index]=foundProduct; //since its a state dont update it directly use setters function
+      setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity + 1 }]);
+      setTotalPrice((prevTotalPrice) => prevTotalPrice + foundProduct.price)
+      setTotalQty((prevTotalQty) => prevTotalQty + 1)
+    } else if (val == 'dec') {
+      if (foundProduct.quantity > 1) {
+        setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity - 1 }]);
+        setTotalPrice((prevTotalPrice) => prevTotalPrice - foundProduct.price)
+        setTotalQty((prevTotalQty) => prevTotalQty - 1)
+      }
+    }
+  }
+
   const incQty = () => {
     setQty((prevQty) => prevQty + 1);
   };
@@ -68,8 +97,10 @@ export const StateContext = ({ children }) => {
         totalQty,
         incQty,
         decQty,
+        toggleCartItemQty,
         qty,
         onAdd,
+        onremove
       }}
     >
       {children}
