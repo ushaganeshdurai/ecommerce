@@ -8,7 +8,7 @@ export const StateContext = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQty, setTotalQty] = useState(0);
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
 
   const onAdd = (product, quantity) => {
     console.log("Adding product:", product); // Log the product object

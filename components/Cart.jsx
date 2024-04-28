@@ -1,9 +1,9 @@
 import React,{useRef, useState} from 'react'
 import styles from '/Globals.module.css'
 import Link from 'next/link'
-import { AiOutlineMinus,AiOutlinePlus,AiOutlineLeft,AiOutlineShopping, AiOutlineFileExcel } from 'react-icons/ai'
+import { AiOutlineMinus,AiOutlinePlus,AiOutlineLeft,AiOutlineShopping, AiOutlineFileExcel, AiTwotonePlaySquare } from 'react-icons/ai'
 import toast from 'react-hot-toast'
-import {TiDeleteOutline} from 'react-icons/ti'
+import {TiDeleteOutline, TiDocumentDelete} from 'react-icons/ti'
 import { useStateContext } from '../context/StateContext'
 import { urlFor } from '../lib/client'
 
@@ -37,13 +37,31 @@ const {totalPrice,totalQty,cartItems,setShowCart} = useStateContext();
     </div>
     <div className={`${styles.flex}${styles.bottom}`}>
       <div>
-        <p className={styles.quantity_desc}></p>
+        <p className={styles.quantity_desc}>
+          <span className={styles.minus}><AiOutlineMinus /></span>
+          <span className={styles.num}>{totalQty}</span>
+          <span className={styles.plus} ><AiOutlinePlus/></span>
+        </p>
       </div>
+      <button type='button'className={styles.remove_item}>
+        <TiDeleteOutline /> 
+      </button>
     </div>
   </div>
 </div>
     ))}
   </div>
+  {cartItems.length>=1 &&(
+    <div className={styles.cart_bottom}>
+      <div className={styles.total}>
+        <h3>Subtotal:</h3>
+        <h3>₹{totalPrice}</h3>
+        </div>
+        <div className={styles.btn_container}>
+        <button type='button' onClick="" className={styles.btn}>Pay with stripe</button>
+      </div>
+      </div>
+  )}
 </div>
     </div>
   )
