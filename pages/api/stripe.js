@@ -1,8 +1,11 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
+  console.log(req.body.cartItems);  
   if (req.method === 'POST') {
+   
     try {
+      
       const params = {
         submit_type: 'pay',
         mode: 'payment',
@@ -16,13 +19,12 @@ export default async function handler(req, res) {
             shipping_rate:'shr_1PCKGDSAtO73Z9AeUj6RsLnJ'
           }
         ],
-            line_items: [
+            line_items: req.body.cartItems.map((item)=>
           {
-            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell //2:44
-            price: '{{PRICE_ID}}',
-            quantity: 1,
-          },
-        ],
+            const img = item.image[0].asset._ref;
+            const newimg=img.replace('image-','https://cdn.sanity.io/images/qs2hb0re/production/').replace('-webp','.webp')
+            console.log('image',newimg)
+          }),
         mode: 'payment',
         success_url: `${req.headers.origin}/?success=true`,
         cancel_url: `${req.headers.origin}/?canceled=true`,
