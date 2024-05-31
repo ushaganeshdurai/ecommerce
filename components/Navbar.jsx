@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { FaSignOutAlt } from "react-icons/fa";
 import styles from "../Globals.module.css";
 import { AiOutlineShopping } from "react-icons/ai";
 import  Cart  from "./Cart";
@@ -13,9 +14,14 @@ const Navbar = ({ product }) => {
 
   return (
     <div className={styles.navbar_container}>
-      <p className={styles.logo}>
-        <Link href="/">JSM HEADPOHNES</Link>
-      </p>
+      <button
+          className={styles.btn}
+          onClick={() => {
+            location.href = '/api/auth/signout'; // Redirect to the signout URL
+          }}
+        >
+          Sign out <FaSignOutAlt />
+        </button>
       <button
         type="button"
         onClick={() => setShowCart(true)}
