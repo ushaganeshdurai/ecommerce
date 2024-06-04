@@ -17,10 +17,11 @@ const Cart = () => {
     const stripe =await getStripe();
     const res =await fetch('/api/stripe', {
       method: 'POST',
+      headers:{'Content-Type':'application/json'},
       body: JSON.stringify(cartItems),
     });
 
-    // if (res.statusCode === 500) return ;
+     if (res.statusCode === 500) return ;
 
     const data =await res.json();
     toast.loading("Redirecting....");

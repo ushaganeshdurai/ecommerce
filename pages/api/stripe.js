@@ -5,6 +5,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     console.log("Body is:",req.body);
+    if (!Array.isArray(req.body)) {
+      return res.status(400).json({ error: "Invalid request body format. Expected an array." });
+    }
     try {
       const params = {
         submit_type: 'pay',
@@ -14,7 +17,8 @@ export default async function handler(req, res) {
         shipping_options: [
           { shipping_rate: 'shr_1PCKEoSAtO73Z9Ae9GfyBV7L' },
         ],
-        line_items: req.body.map((item) => {
+        
+        line_items: req.body.cartItems.map((item) => {
           const img = item.image[0].asset._ref;
           const newImage = img.replace('image-', 'https://cdn.sanity.io/images/qs2hb0re/production/').replace('-webp', '.webp');
           console.log('IMAGE',newImage);
@@ -24,6 +28,11 @@ export default async function handler(req, res) {
               product_data: { 
                 name: item.name,
                 images: [newImage],
+              },
+              address:{
+                line1: req.body[0].address.line1,
+                line2: req.body[0].address.line2,
+                country:'INDIA'
               },
               unit_amount: item.price * 100,
             },
